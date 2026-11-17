@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nova EPM — персонал шығындарын жоспарлау және HR-бюджеттеу</title>
+<meta name="description" content="Nova EPM — HR, C&B және қаржы командаларына арналған платформа: еңбекақы қоры мен штатты жоспарлау, ұйымдық өзгерістерді модельдеу, жоспар мен фактіні онлайн салыстыру.">
+<meta name="theme-color" content="#0C2234">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #13293D;
+    --muted: #566B7C;
+    --paper: #F2F5F7;
+    --white: #FFFFFF;
+    --sky: #0F78A3;
+    --sky-soft: #E2F0F6;
+    --sky-light: #7CC6E4;
+    --gold: #E9B11C;
+    --gold-soft: #FBF0D2;
+    --gold-ink: #8A6400;
+    --deep: #0C2234;
+    --deep-2: #14324A;
+    --line: #D6DEE5;
+    --radius-s: 6px;
+    --radius-m: 10px;
+    --radius-l: 16px;
+    --wrap: 1200px;
+    --gutter: clamp(20px, 4vw, 40px);
+    --section: clamp(56px, 7vw, 88px);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: "Geologica", "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, p { margin: 0; }
+  a { color: inherit; }
+  img, svg { display: block; }
+  :focus-visible { outline: 3px solid var(--sky); outline-offset: 3px; border-radius: 4px; }
+  .dark :focus-visible { outline-color: var(--gold); }
+
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+  .skip {
+    position: absolute; left: 16px; top: -60px; z-index: 10;
+    background: var(--gold); color: var(--deep); padding: 10px 16px;
+    border-radius: var(--radius-s); font-weight: 600; text-decoration: none;
+  }
+  .skip:focus { top: 16px; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 48px; padding: 0 22px;
+    font: inherit; font-size: 16px; font-weight: 600;
+    border-radius: var(--radius-s); border: 1px solid transparent;
+    text-decoration: none; cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease;
+  }
+  .btn-primary { background: var(--gold); color: var(--deep); }
+  .btn-primary:hover { background: #F4C23A; }
+  .btn-ghost { color: var(--white); border-color: rgba(255,255,255,.35); }
+  .btn-ghost:hover { border-color: var(--white); }
+
+  /* ---------- Header + hero ---------- */
+  .dark { background: var(--deep); color: var(--white); }
+
+  .nav { display: flex; align-items: center; gap: 32px; padding-top: 22px; padding-bottom: 22px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700; font-size: 19px; letter-spacing: -.01em; }
+  .logo svg { width: 26px; height: 26px; }
+  .nav-links { display: flex; gap: 28px; margin-left: auto; list-style: none; padding: 0; margin-top: 0; margin-bottom: 0; }
+  .nav-links a { text-decoration: none; font-size: 15px; color: rgba(255,255,255,.78); }
+  .nav-links a:hover { color: var(--white); }
+  .lang { display: flex; gap: 4px; font-size: 14px; }
+  .lang a, .lang span { padding: 4px 8px; border-radius: var(--radius-s); text-decoration: none; }
+  .lang span { background: var(--deep-2); color: var(--white); font-weight: 600; }
+  .lang a { color: rgba(255,255,255,.65); }
+  .lang a:hover { color: var(--white); }
+  .nav .btn { min-height: 42px; padding: 0 18px; font-size: 15px; }
+
+  .hero {
+    display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 5vw, 64px);
+    align-items: center;
+    padding-top: clamp(28px, 4vw, 48px); padding-bottom: 64px;
+  }
+  .hero h1 {
+    font-size: clamp(2.25rem, 4vw, 3.5rem);
+    line-height: 1.04; font-weight: 700; letter-spacing: -.025em;
+    text-wrap: balance;
+  }
+  .hero-lead { margin-top: 22px; font-size: 18px; color: rgba(255,255,255,.8); max-width: 34em; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
+  .clients { margin-top: 40px; font-size: 14px; color: rgba(255,255,255,.6); max-width: 30em; }
+  .clients strong { color: rgba(255,255,255,.88); font-weight: 500; }
+
+  /* ---------- Budget widget ---------- */
+  .budget {
+    margin: 0; background: var(--white); color: var(--ink);
+    border-radius: var(--radius-l);
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,.45);
+    overflow: hidden;
+  }
+  .budget-head {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    padding: 20px 24px 16px; border-bottom: 1px solid var(--line);
+  }
+  .budget-title { font-weight: 600; font-size: 17px; }
+  .budget-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .chip-plan {
+    font-size: 13px; font-weight: 500; padding: 4px 10px; border-radius: 999px;
+    background: var(--sky-soft); color: var(--sky); white-space: nowrap;
+  }
+  .budget table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  .budget th {
+    text-align: left; font-weight: 500; font-size: 12.5px; color: var(--muted);
+    padding: 10px 12px; border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  .budget th:first-child, .budget td:first-child { padding-left: 24px; }
+  .budget th:last-child, .budget td:last-child { padding-right: 24px; }
+  .budget th.num, .budget td.num { text-align: right; }
+  .budget td { padding: 10px 12px; border-bottom: 1px solid #EDF1F4; vertical-align: middle; }
+  .budget tr[hidden] { display: none; }
+  .budget td small { display: block; font-size: 12px; color: var(--muted); line-height: 1.3; }
+  .budget .lvl-0 td { font-weight: 600; }
+  .unit { position: relative; display: flex; align-items: center; gap: 6px; padding-left: calc(var(--lvl, 0) * 22px); line-height: 1.3; }
+  .unit::before {
+    content: ""; position: absolute; top: -10px; height: calc(50% + 10px); width: 9px;
+    left: calc(var(--lvl, 0) * 22px - 13px);
+    border-left: 1px solid #C3CFD8; border-bottom: 1px solid #C3CFD8;
+    border-bottom-left-radius: 4px;
+  }
+  .lvl-0 .unit::before { display: none; }
+  .tree-toggle {
+    flex: none; width: 22px; height: 22px; display: grid; place-items: center;
+    border: 0; border-radius: 4px; background: transparent; color: var(--muted); cursor: pointer; padding: 0;
+  }
+  .tree-toggle:hover { background: var(--paper); color: var(--ink); }
+  .tree-toggle svg { width: 12px; height: 12px; transition: transform .15s ease; }
+  .tree-toggle[aria-expanded="false"] svg { transform: rotate(-90deg); }
+  .tree-spacer { flex: none; width: 22px; }
+
+  .status { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 500; white-space: nowrap; }
+  .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .s-done { color: var(--sky); }
+  .s-review { color: var(--gold-ink); }
+  .s-work { color: var(--muted); }
+
+  .budget-foot { padding: 18px 24px 20px; display: grid; gap: 14px; }
+  .limit-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; font-size: 13.5px; }
+  .nowrap { white-space: nowrap; }
+  .limit-row b { font-weight: 600; }
+  .bar { height: 8px; background: var(--paper); border-radius: 999px; overflow: hidden; margin-top: 8px; }
+  .bar i { display: block; height: 100%; width: var(--v); background: var(--gold); border-radius: 999px; transform-origin: left; }
+  .warn {
+    display: flex; gap: 10px; align-items: flex-start; font-size: 13.5px; line-height: 1.4;
+    background: var(--gold-soft); border-radius: var(--radius-s); padding: 10px 12px;
+  }
+  .warn svg { flex: none; width: 18px; height: 18px; color: var(--gold-ink); margin-top: 1px; }
+  .legend { font-size: 12.5px; color: var(--muted); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .budget tbody tr { animation: rowIn .5s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i) * 90ms + 250ms); }
+    .bar i { animation: fill 1.1s cubic-bezier(.2,.7,.2,1) .8s both; }
+    @keyframes rowIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    @keyframes fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  }
+
+  /* ---------- Sections ---------- */
+  .section { padding-top: var(--section); padding-bottom: var(--section); }
+  .section-white { background: var(--white); }
+  .h2 { font-size: clamp(1.85rem, 3.1vw, 2.7rem); line-height: 1.1; font-weight: 700; letter-spacing: -.02em; text-wrap: balance; }
+  .lead { margin-top: 16px; color: var(--muted); max-width: 36em; }
+  .dark .lead { color: rgba(255,255,255,.75); }
+
+  /* Solutions strip */
+  .solutions { padding-bottom: var(--section); }
+  .solution-list {
+    list-style: none; margin: 0; padding: 28px 0 0;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(24px, 4vw, 56px);
+    border-top: 1px solid rgba(255,255,255,.18);
+  }
+  .solution-list h3 { font-size: 1.15rem; font-weight: 600; letter-spacing: -.01em; }
+  .solution-list p { margin-top: 8px; font-size: 15.5px; color: rgba(255,255,255,.72); }
+
+  /* Process route */
+  .route { list-style: none; padding: 0; margin: 40px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; position: relative; }
+  .route::before {
+    content: ""; position: absolute; top: 21px; left: 22px; right: calc(25% - 6px);
+    height: 2px; background: linear-gradient(to right, var(--sky) 0 75%, var(--gold) 100%);
+  }
+  .route li { position: relative; }
+  .node {
+    position: relative; z-index: 1; width: 44px; height: 44px; border-radius: 50%;
+    display: grid; place-items: center; font-weight: 700; font-size: 17px;
+    background: var(--white); border: 2px solid var(--sky); color: var(--sky);
+  }
+  .route li:last-child .node { background: var(--gold); border-color: var(--gold); color: var(--deep); }
+  .route h3 { font-size: 1.12rem; font-weight: 600; margin-top: 18px; }
+  .route p { font-size: 15.5px; color: var(--muted); margin-top: 8px; }
+
+  /* Comparison */
+  .compare-grid { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 6vw, 72px); align-items: start; }
+  .figure-note { margin-top: 28px; display: flex; gap: 14px; align-items: baseline; }
+  .figure-note b { font-size: clamp(2.6rem, 5vw, 3.6rem); font-weight: 700; letter-spacing: -.03em; color: var(--sky); line-height: 1; }
+  .figure-note span { font-size: 15px; color: var(--muted); max-width: 16em; }
+  .compare { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 15.5px; }
+  .compare th, .compare td { text-align: left; vertical-align: top; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+  .compare thead th { font-size: 15px; font-weight: 600; border-bottom: 2px solid var(--ink); }
+  .compare tbody th { font-weight: 500; color: var(--muted); width: 26%; padding-left: 0; }
+  .compare .us { background: var(--white); color: var(--ink); }
+  .compare thead .us { color: var(--sky); border-top: 3px solid var(--sky); border-radius: var(--radius-s) var(--radius-s) 0 0; }
+  .compare tbody tr:last-child .us { border-radius: 0 0 var(--radius-s) var(--radius-s); }
+  .compare td:not(.us) { color: var(--muted); }
+  .compare tbody tr:last-child th, .compare tbody tr:last-child td { border-bottom: 0; }
+
+  /* Security */
+  .security { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(32px, 6vw, 80px); align-items: start; }
+  .checks { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 14px; }
+  .checks li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; color: rgba(255,255,255,.88); }
+  .checks svg { width: 20px; height: 20px; color: var(--sky-light); margin-top: 3px; }
+  .side-block { border-left: 1px solid rgba(255,255,255,.18); padding-left: 28px; }
+  .side-block + .side-block { margin-top: 32px; }
+  .side-block h3 { font-size: 1.05rem; font-weight: 600; }
+  .side-block p { margin-top: 8px; font-size: 15px; color: rgba(255,255,255,.72); }
+  .integrations { list-style: none; padding: 0; margin: 12px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .integrations li { font-size: 14px; padding: 6px 12px; border-radius: var(--radius-s); background: var(--deep-2); color: var(--white); }
+
+  /* Demo form */
+  .demo { display: grid; grid-template-columns: 5fr 7fr; gap: clamp(32px, 6vw, 72px); align-items: start; }
+  .demo-panel { background: var(--paper); border-radius: var(--radius-l); padding: clamp(22px, 3vw, 36px); }
+  .form { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 16px; }
+  .field { display: grid; gap: 6px; }
+  .field-wide { grid-column: 1 / -1; }
+  .field label { font-size: 14px; font-weight: 500; }
+  .field input, .field select {
+    font: inherit; font-size: 16px; color: var(--ink);
+    min-height: 48px; padding: 0 14px; width: 100%;
+    background: var(--white); border: 1px solid #BFCBD5; border-radius: var(--radius-s);
+  }
+  .field input:focus, .field select:focus { outline: 3px solid var(--sky-soft); border-color: var(--sky); }
+  .field input:user-invalid { border-color: #B23A2B; }
+  .consent { grid-column: 1 / -1; display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--muted); }
+  .consent input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--sky); flex: none; }
+  .form .btn { grid-column: 1 / -1; justify-self: start; }
+  .form-done { display: none; }
+  .form-done h3 { font-size: 1.35rem; font-weight: 600; }
+  .form-done p { margin-top: 8px; color: var(--muted); }
+  .sent .form { display: none; }
+  .sent .form-done { display: block; }
+  .demo-points { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 10px; color: var(--muted); }
+  .demo-points li { padding-left: 18px; position: relative; }
+  .demo-points li::before { content: ""; position: absolute; left: 0; top: .65em; width: 8px; height: 2px; background: var(--gold); }
+
+  /* Footer */
+  .footer { padding-top: 28px; padding-bottom: 28px; display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: center; font-size: 14px; color: rgba(255,255,255,.65); }
+  .footer .logo { color: var(--white); font-size: 16px; }
+  .footer .logo svg { width: 20px; height: 20px; }
+  .footer a { color: rgba(255,255,255,.8); }
+  .footer-right { margin-left: auto; display: flex; gap: 24px; flex-wrap: wrap; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1020px) {
+    .nav-links { display: none; }
+    .lang { margin-left: auto; }
+    .hero, .compare-grid, .security, .demo { grid-template-columns: 1fr; }
+    .solution-list { grid-template-columns: 1fr; gap: 24px; }
+    .route { grid-template-columns: 1fr 1fr; row-gap: 40px; }
+    .route::before { display: none; }
+  }
+  @media (max-width: 600px) {
+    body { font-size: 16px; }
+    .nav { gap: 16px; }
+    .nav .btn { display: none; }
+    .budget th:first-child, .budget td:first-child { padding-left: 16px; }
+    .budget th:last-child, .budget td:last-child { padding-right: 16px; }
+    .budget-head, .budget-foot { padding-left: 16px; padding-right: 16px; }
+    .col-staff, .col-status { display: none; }
+    .unit { padding-left: calc(var(--lvl, 0) * 14px); }
+    .unit::before { left: calc(var(--lvl, 0) * 14px - 9px); width: 6px; }
+    .route { grid-template-columns: 1fr; }
+    .compare tbody th { width: auto; }
+    .compare th, .compare td { padding: 12px 10px; font-size: 14.5px; }
+    .form { grid-template-columns: 1fr; }
+    .footer-right { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Негізгі мазмұнға өту</a>
+
+<header class="dark">
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Nova EPM — басты бет">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 1.5c1.2 7.6 6.9 13.3 14.5 14.5-7.6 1.2-13.3 6.9-14.5 14.5C14.8 22.9 9.1 17.2 1.5 16 9.1 14.8 14.8 9.1 16 1.5Z" fill="#E9B11C"/><circle cx="16" cy="16" r="3.2" fill="#0C2234"/></svg>
+      Nova EPM
+    </a>
+    <nav aria-label="Негізгі мәзір">
+      <ul class="nav-links">
+        <li><a href="#solutions">Шешімдер</a></li>
+        <li><a href="#process">Науқан қалай өтеді</a></li>
+        <li><a href="#security">Қауіпсіздік</a></li>
+      </ul>
+    </nav>
+    <div class="lang" aria-label="Сайт тілі">
+      <span aria-current="true">Қаз</span>
+      <a href="https://novaepm.com/" lang="ru" hreflang="ru">Рус</a>
+    </div>
+    <a class="btn btn-primary" href="#demo">Демо сұрау</a>
+  </div>
+
+  <div class="wrap hero" id="top">
+    <div>
+      <h1>Еңбекақы қоры мен штатты <span class="nowrap">Excel-сіз</span> жоспарлаңыз</h1>
+      <p class="hero-lead">Nova EPM — HR, C&amp;B және қаржы командаларына арналған платформа. Басшылар өз бөлімшесінің бюджетін жүйеде жоспарлайды, ал сіз жоспар мен фактіні нақты уақытта көресіз.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#demo">Демо сұрау</a>
+        <a class="btn btn-ghost" href="#process">Науқан қалай өтеді</a>
+      </div>
+      <p class="clients">Nova EPM-мен жұмыс істейді: <strong>«СберМаркетинг», «Ашан», «Парк Горького»</strong></p>
+    </div>
+
+    <figure class="budget" aria-label="Nova EPM-дегі бөлімше бюджетінің мысалы">
+      <div class="budget-head">
+        <div>
+          <p class="budget-title">2027 жылғы бюджет</p>
+          <p class="budget-sub">Коммерциялық дирекция тармағы</p>
+        </div>
+        <span class="chip-plan">Жоспар</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Бөлімше</th>
+            <th scope="col" class="num">Еңбекақы қоры, ₸</th>
+            <th scope="col" class="num col-staff">Штат</th>
+            <th scope="col" class="col-status">Мәртебесі</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="lvl-0" data-id="com" style="--i:0">
+            <td><div class="unit" style="--lvl:0"><button class="tree-toggle" type="button" aria-expanded="true" aria-label="Коммерциялық дирекция — жию"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>Коммерциялық дирекция</div></td>
+            <td class="num">2,84 млрд<small>+6,4%</small></td>
+            <td class="num col-staff">412<small>+14</small></td>
+            <td class="col-status"><span class="status s-work">Жұмыста</span></td>
+          </tr>
+          <tr data-id="mkt" data-parent="com" style="--i:1">
+            <td><div class="unit" style="--lvl:1"><button class="tree-toggle" type="button" aria-expanded="true" aria-label="Маркетинг департаменті — жию"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>Маркетинг департаменті</div></td>
+            <td class="num">1,12 млрд<small>+6,7%</small></td>
+            <td class="num col-staff">156<small>+7</small></td>
+            <td class="col-status"><span class="status s-done">Келісілді</span></td>
+          </tr>
+          <tr data-id="dig" data-parent="mkt" style="--i:2">
+            <td><div class="unit" style="--lvl:2"><span class="tree-spacer"></span>Digital-жылжыту бөлімі</div></td>
+            <td class="num">0,41 млрд<small>+7,9%</small></td>
+            <td class="num col-staff">58<small>+3</small></td>
+            <td class="col-status"><span class="status s-done">Келісілді</span></td>
+          </tr>
+          <tr data-id="brand" data-parent="mkt" style="--i:3">
+            <td><div class="unit" style="--lvl:2"><span class="tree-spacer"></span>Бренд-коммуникациялар бөлімі</div></td>
+            <td class="num">0,71 млрд<small>+6,0%</small></td>
+            <td class="num col-staff">98<small>+4</small></td>
+            <td class="col-status"><span class="status s-done">Келісілді</span></td>
+          </tr>
+          <tr data-id="sales" data-parent="com" style="--i:4">
+            <td><div class="unit" style="--lvl:1"><span class="tree-spacer"></span>Сату департаменті</div></td>
+            <td class="num">1,72 млрд<small>+6,2%</small></td>
+            <td class="num col-staff">256<small>+7</small></td>
+            <td class="col-status"><span class="status s-review">Келісуде</span></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="budget-foot">
+        <div>
+          <div class="limit-row"><span>Лимит: <b class="nowrap">2,95 млрд ₸</b></span><span>Лимиттің <b>96%-ы</b> пайдаланылды</span></div>
+          <div class="bar" role="img" aria-label="Лимиттің 96 пайызы пайдаланылды"><i style="--v:96%"></i></div>
+        </div>
+        <p class="warn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 2.5 18 17H2L10 2.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 8v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="14.4" r=".9" fill="currentColor"/></svg>Сату департаменті: 3 бос орынның жалақысы грейд ауқымынан жоғары</p>
+        <p class="legend">Сұр сандар — 2026 жылғы фактіге қарағанда өзгеріс</p>
+      </div>
+    </figure>
+  </div>
+  <div class="wrap solutions" id="solutions">
+    <h2 class="sr-only">Nova EPM шешімдері</h2>
+    <ul class="solution-list">
+      <li>
+        <h3>Ұйымдық өзгерістер</h3>
+        <p>Қайта ұйымдастыруды алдын ала модельдеңіз және оның штат пен шығынға әсерін енгізуден бұрын бағалаңыз.</p>
+      </li>
+      <li>
+        <h3>Персонал шығындарын жоспарлау</h3>
+        <p>Штаттағы қызметкерлер мен азаматтық-құқықтық шарт бойынша орындаушылардың жылдық бюджетін бір жүйеде жинап, компания ережелері бойынша келісіңіз.</p>
+      </li>
+      <li>
+        <h3>Жалақыны қайта қарау</h3>
+        <p>Қайта қарау науқанын бекітілген бюджет шегінде өткізіңіз: басшылардың ұсыныстары, келісу және еңбекақы қорына әсері бір жерде.</p>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<main id="main">
+  <section class="section section-white" id="process" aria-labelledby="process-title">
+    <div class="wrap">
+      <h2 class="h2" id="process-title">Бюджеттеу науқаны қалай өтеді</h2>
+      <ol class="route">
+        <li>
+          <span class="node" aria-hidden="true">1</span>
+          <h3>Деректер жүктеледі</h3>
+          <p>Құрылым, қызметкерлер мен сыйақылар 1С, SAP HCM немесе БОСС-Кадровиктен автоматты түрде келеді.</p>
+        </li>
+        <li>
+          <span class="node" aria-hidden="true">2</span>
+          <h3>C&amp;B науқанды ашады</h3>
+          <p>Мерзімдерді, бюджет құрылымын және есептеу параметрлерін белгілейді. Қолжетімділік рөлдер бойынша өздігінен беріледі.</p>
+        </li>
+        <li>
+          <span class="node" aria-hidden="true">3</span>
+          <h3>Басшылар жоспарлайды</h3>
+          <p>Жаңа бос орын, ауыстыру, жалақыны көтеру, жұмыстан шығу — әр сценарий бюджетке бірден есептеледі, ал жүйе қателерді ескертеді.</p>
+        </li>
+        <li>
+          <span class="node" aria-hidden="true">4</span>
+          <h3>Бюджет келісіледі</h3>
+          <p>Бюджет құрылым деңгейлері бойынша жоғары көтеріледі. C&amp;B жоспар мен фактіні және лимиттен асуды онлайн көреді.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="compare-title">
+    <div class="wrap compare-grid">
+      <div>
+        <h2 class="h2" id="compare-title">Персонал шығындарын азайтыңыз</h2>
+        <p class="lead">Үнемдеу басшылар өз бөлімшесінің бюджетіне өздері жауап бере бастағанда пайда болады. Жалпы қаржылық жүйелер бұған бейімделмеген.</p>
+        <p class="figure-note"><b>4–8%</b><span>еңбекақы қорын оңтайландыру, клиенттердің жобаларында расталған</span></p>
+      </div>
+      <table class="compare">
+        <caption class="sr-only">Nova EPM мен жалпы BI, CPM және IBP жүйелерін салыстыру</caption>
+        <thead>
+          <tr>
+            <th scope="col"><span class="sr-only">Өлшем</span></th>
+            <th scope="col" class="us">Nova EPM</th>
+            <th scope="col">BI, CPM, IBP жүйелері</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Кімге арналған</th><td class="us">HR, C&amp;B және ұйымдық даму</td><td>Негізінен қаржы блогы</td></tr>
+          <tr><th scope="row">Детализация</th><td class="us">Әр қызметкер мен бос орынға дейін</td><td>Баптар мен бөлімшелер деңгейінде</td></tr>
+          <tr><th scope="row">Басшылар</th><td class="us">Бюджетін жүйеде өздері жоспарлайды</td><td>Күрделі интерфейс, ұзақ оқыту</td></tr>
+          <tr><th scope="row">Жаңа төлем түрі</th><td class="us">Баптаулар арқылы қосылады</td><td>Макростарды қайта жазу, қымбат әзірлеу</td></tr>
+          <tr><th scope="row">Енгізу</th><td class="us">Жылдам, қаржы блогына тәуелсіз</td><td>Ұзақ, қаржы блогына тәуелді</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section dark" id="security" aria-labelledby="security-title">
+    <div class="wrap security">
+      <div>
+        <h2 class="h2" id="security-title">Деректер сіздің контурыңызда қалады</h2>
+        <ul class="checks">
+          <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10.5 4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Тапсырыс берушінің серверіне немесе бұлтқа орнату. Жабық контурда деректер вендорға берілмейді.</span></li>
+          <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10.5 4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>AD, LDAP және SSO арқылы бірыңғай кіру</span></li>
+          <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10.5 4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Құрылым мен бөлімшелер бойынша рөлдік қолжетімділік, өзгерістер журналы</span></li>
+          <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10.5 4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Қауіпсіздік оқиғаларын SIEM-ге нақты уақытта беру</span></li>
+          <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m4 10.5 4 4 8-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Кодты SonarQube арқылы тексеру, сұрау бойынша SAST/DAST</span></li>
+        </ul>
+      </div>
+      <div>
+        <div class="side-block">
+          <h3>Интеграциялар</h3>
+          <ul class="integrations"><li>1С</li><li>SAP HCM</li><li>БОСС-Кадровик</li><li>REST API</li></ul>
+        </div>
+        <div class="side-block">
+          <h3>30 000 штат бірлігіне дейін</h3>
+          <p>Қолданба серверіне 8 CPU және 32 GB RAM жеткілікті. Дерекқор негізгі және резервтік көшірме түрінде жұмыс істейді, әрқайсысына 4 CPU және 16 GB RAM. Нақты есеп пилоттық жобада жасалады.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-white" id="demo" aria-labelledby="demo-title">
+    <div class="wrap demo">
+      <div>
+        <h2 class="h2" id="demo-title">Жүйені демода көріңіз</h2>
+        <p class="lead">Өтінім қалдырыңыз — менеджер хабарласып, ыңғайлы уақытты келіседі.</p>
+        <ul class="demo-points">
+          <li>Бюджеттеу науқанын басынан аяғына дейін көрсетеміз</li>
+          <li>Сіздің құрылымыңыз бен төлем жүйеңізге қалай бапталатынын түсіндіреміз</li>
+          <li>Интеграция мен орнату туралы сұрақтарға жауап береміз</li>
+        </ul>
+      </div>
+      <div class="demo-panel" id="demo-panel">
+        <form class="form" id="demo-form" novalidate>
+          <div class="field"><label for="f-name">Аты-жөніңіз</label><input id="f-name" name="name" autocomplete="name" required></div>
+          <div class="field"><label for="f-company">Компания</label><input id="f-company" name="company" autocomplete="organization" required></div>
+          <div class="field"><label for="f-role">Лауазымыңыз</label><input id="f-role" name="role" autocomplete="organization-title"></div>
+          <div class="field">
+            <label for="f-size">Қызметкерлер саны</label>
+            <select id="f-size" name="size">
+              <option>1 000-ға дейін</option>
+              <option>1 000 – 5 000</option>
+              <option>5 000 – 20 000</option>
+              <option>20 000-нан көп</option>
+            </select>
+          </div>
+          <div class="field"><label for="f-email">Жұмыс email-і</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+          <div class="field"><label for="f-phone">Телефон</label><input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="+7"></div>
+          <label class="consent"><input type="checkbox" name="consent" required>Жеке деректерімді өңдеуге келісемін</label>
+          <button class="btn btn-primary" type="submit">Демо сұрау</button>
+        </form>
+        <div class="form-done" role="status" tabindex="-1" id="form-done">
+          <h3>Өтінім жіберілді</h3>
+          <p>Менеджер жақын арада хабарласып, демо уақытын келіседі.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="dark">
+  <div class="wrap footer">
+    <a class="logo" href="#top">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 1.5c1.2 7.6 6.9 13.3 14.5 14.5-7.6 1.2-13.3 6.9-14.5 14.5C14.8 22.9 9.1 17.2 1.5 16 9.1 14.8 14.8 9.1 16 1.5Z" fill="#E9B11C"/><circle cx="16" cy="16" r="3.2" fill="#0C2234"/></svg>
+      Nova EPM
+    </a>
+    <span>© 2026 Nova EPM</span>
+    <div class="footer-right">
+      <a href="#demo">Демо сұрау</a>
+      <a href="https://novaepm.com/" lang="ru" hreflang="ru">Орыс тіліндегі сайт</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var rows = Array.prototype.slice.call(document.querySelectorAll('.budget tbody tr'));
+    function children(id) { return rows.filter(function (r) { return r.dataset.parent === id; }); }
+    function setVisible(id, show) {
+      children(id).forEach(function (r) {
+        r.hidden = !show;
+        var t = r.querySelector('.tree-toggle');
+        setVisible(r.dataset.id, show && (!t || t.getAttribute('aria-expanded') === 'true'));
+      });
+    }
+    document.querySelectorAll('.tree-toggle').forEach(function (btn) {
+      var row = btn.closest('tr');
+      var name = row.querySelector('.unit').textContent.trim();
+      btn.addEventListener('click', function () {
+        var open = btn.getAttribute('aria-expanded') !== 'true';
+        btn.setAttribute('aria-expanded', String(open));
+        btn.setAttribute('aria-label', name + (open ? ' — жию' : ' — ашу'));
+        setVisible(row.dataset.id, open);
+      });
+    });
+
+    var form = document.getElementById('demo-form');
+    var panel = document.getElementById('demo-panel');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!form.checkValidity()) { form.reportValidity(); return; }
+      panel.classList.add('sent');
+      document.getElementById('form-done').focus();
+    });
+  })();
+</script>
+</body>
+</html>
